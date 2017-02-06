@@ -1,0 +1,74 @@
+<html>
+	<head>
+		<link rel="shortcut icon" href="">
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript">
+		
+			var socket = io.connect();
+			
+			socket.on('connect', function() {
+				console.log("Connected");
+			});
+
+			// Receive from any event
+			socket.on('chatmessage', function (data) {
+				console.log(data);
+
+				//format the data we recieve into an html string
+
+			var dataString = '<p>' + data + '</p>';
+			// write message to the html div 'messages' - += will add existing innerHTML content
+
+			document.getElementById('messages').innerhtml += dataString;
+
+
+
+			// this is what we need to change to get more than one line of messages	
+				//document.getElementById('messages').innerHTML = "" + data + 
+ 				//	+ "" + document.getElementById('messages').innerHTML;
+
+
+			});
+			
+			var sendmessage = function(message) {
+				console.log("chatmessage: " + message);
+				socket.emit('chatmessage', message);
+				
+
+				//clear the unput value after submit is clicked
+
+				document.getElementById('message').value="";
+			};
+
+	
+		</script>
+		<style>
+		.body {
+			text-align: center;
+			color: #65185f;
+			background: url('img/Space.jpg') center center fixed no-repeat #00d4c9;
+			padding-top: 250px;
+			font-family: sans-serif;
+
+		}
+
+		p{
+			margin:.5em;
+		}
+		</style>	
+	</head>
+ <body class="body box">
+ 		<input type="text" id="message" placeholder= "send a message" name="message">
+ 		<input type="submit" value="submit" onclick="sendmessage(document.getElementById('message').value);">
+
+ 	<div id="messages">
+ 		
+ 	</div>
+ </body>
+</html>
+
+
+
+
+
+
